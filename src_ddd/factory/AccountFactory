@@ -1,0 +1,27 @@
+import { AccountRepository } from "module";
+
+class AccountFactory {
+  private accountRepo: AccountRepository;
+
+  constructor(accountRepo: AccountRepository) {
+    this.accountRepo = accountRepo;
+  }
+
+  create(customerId: string): Account {
+    const account = new Account(uuid());
+    const customer = this.customerRepo.getById(customerId);
+
+    if (!customer) {
+      throw new Error(`Customer with ID ${customerId} not found`);
+    }
+
+    customer.accounts.push(account);
+    this.accountRepo.save(account);
+    this.customerRepo.save(customer);
+
+    return account;
+  }
+}
+function uuid(): any {
+    throw new Error("Function not implemented.");
+}
